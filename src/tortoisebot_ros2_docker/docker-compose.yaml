@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  ros2:
+    image: nvidia_ros2:latest
+    build:
+      context: .
+      dockerfile: dockerfile_ros2
+  
+  gazebo:
+    image: tortoisebot-ros2-gazebo:latest
+    build:
+      context: .
+      dockerfile: dockerfile_ros2_gazebo
+    container_name: tortoisebot-ros2-gazebo
+    volumes:
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_gazebo:/ros2_ws/src/tortoisebot/tortoisebot_gazebo:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_description:/ros2_ws/src/tortoisebot/tortoisebot_description:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_control:/ros2_ws/src/tortoisebot/tortoisebot_control:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_bringup:/ros2_ws/src/tortoisebot/tortoisebot_bringup:rw
+      - ~/ros2_ws/src/tortoisebot/ydlidar:/ros2_ws/src/tortoisebot/ydlidar:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_firmware:/ros2_ws/src/tortoisebot/tortoisebot_firmware:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=:1
+    tty: true
+
+  slam:
+    image: tortoisebot-ros2-slam:latest
+    build:
+      context: .
+      dockerfile: dockerfile_ros2_slam
+    container_name: tortoisebot-ros2-slam
+    volumes:
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_slam:/ros2_ws/src/tortoisebot/tortoisebot_slam:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_gazebo:/ros2_ws/src/tortoisebot/tortoisebot_gazebo:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_control:/ros2_ws/src/tortoisebot/tortoisebot_control:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_description:/ros2_ws/src/tortoisebot/tortoisebot_description:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_bringup:/ros2_ws/src/tortoisebot/tortoisebot_bringup:rw
+      - ~/ros2_ws/src/tortoisebot/ydlidar:/ros2_ws/src/tortoisebot/ydlidar:rw
+      - ~/ros2_ws/src/tortoisebot/tortoisebot_firmware:/ros2_ws/src/tortoisebot/tortoisebot_firmware:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=:1
+    tty: true

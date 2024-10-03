@@ -1,0 +1,19 @@
+FROM tortoisebot-ros2-gazebo:latest
+
+# Change the default shell to Bash
+SHELL [ "/bin/bash" , "-c" ]
+
+# Install Git
+RUN apt-get update && apt-get install -y git
+
+# Install cartographer
+RUN apt install -y ros-humble-cartographer-ros
+
+WORKDIR /ros2_ws
+# Compile ros2 workspace
+RUN source /opt/ros/humble/setup.bash \
+ && colcon build
+
+RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
+
+WORKDIR /ros2_ws
